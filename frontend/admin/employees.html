@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employees Management</title>
+  <link rel="stylesheet" href="../assets/css/employees.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <h2>SecureClock</h2>
+ <nav>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="employees.html">Employees</a>
+  <a href="attendance.html">Attendance</a>
+  <a href="profile.html">Profile</a>
+</nav>
+  <button onclick="logout()">Logout</button>
+</aside>
+
+<main class="content">
+  <header>
+    <h1>Employees</h1>
+    <button class="add-btn" onclick="openForm()">Add Employee</button>
+  </header>
+
+  <!-- Employees Table -->
+  <section class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>PIN</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="employeesTable"></tbody>
+    </table>
+  </section>
+</main>
+
+<!-- Add/Edit Form Modal -->
+<div id="employeeForm" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeForm()">&times;</span>
+    <h3 id="formTitle">Add Employee</h3>
+    <input id="empName" placeholder="Full Name">
+    <input id="empEmail" placeholder="Email">
+    <input id="empPin" placeholder="PIN (4 digits)">
+    <button onclick="saveEmployee()">Save</button>
+  </div>
+</div>
+
+<script src="../assets/js/employees.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clock System</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Secure Clock System</h1>
+    <p>Iltimos, birini tanlang:</p>
+    <button onclick="selectType('IN')">Clock In</button>
+    <button onclick="selectType('OUT')">Clock Out</button>
+  </div>
+
+  <script>
+    function selectType(type) {
+      localStorage.setItem("clockType", type);
+      window.location.href = "pin.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <h2>SecureClock</h2>
+    <nav>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="employees.html">Employees</a>
+  <a href="attendance.html">Attendance</a>
+  <a href="profile.html">Profile</a>
+</nav>
+
+  <button onclick="logout()">Logout</button>
+</aside>
+
+<main class="content">
+  <header>
+    <h1>Dashboard</h1>
+    <span>Welcome, Admin</span>
+  </header>
+
+  <section class="card">
+    <h3>Attendance Logs</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Type</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody id="logs"></tbody>
+    </table>
+  </section>
+</main>
+
+
+<script src="../assets/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+body {
+  background: #0f172a;
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #020617;
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  text-align: center;
+  width: 350px;
+}
+
+button {
+  padding: 12px 25px;
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#choiceDiv button:nth-child(1) { background: #22c55e; color: #020617; }
+#choiceDiv button:nth-child(2) { background: #f97316; color: #020617; }
+
+#pinDiv input {
+  width: 80%;
+  padding: 10px;
+  margin: 15px 0;
+  border-radius: 8px;
+  border: none;
+  background: #1f2933;
+  color: #fff;
+  font-size: 16px;
+}
+
+#pinDiv button {
+  background: #2563eb;
+  color: #fff;
+}
+#error {
+  margin-top: 10px;
+  color: #f87171;
+}

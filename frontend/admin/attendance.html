@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attendance</title>
+  <link rel="stylesheet" href="../assets/css/attendance.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <h2>SecureClock</h2>
+  <nav>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="employees.html">Employees</a>
+  <a href="attendance.html">Attendance</a>
+  <a href="profile.html">Profile</a>
+</nav>
+
+  <button onclick="logout()">Logout</button>
+</aside>
+
+<main class="content">
+  <header>
+    <h1>Attendance Logs</h1>
+    <input type="date" id="filterDate">
+    <button onclick="filterAttendance()">Filter</button>
+  </header>
+
+  <section class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Type</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody id="attendanceTable"></tbody>
+    </table>
+  </section>
+</main>
+
+<script src="../assets/js/attendance.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+}
+
+.header {
+  background-color: #007bff;
+  color: white;
+  padding: 15px 30px;
+  text-align: center;
+  font-size: 24px;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #1c1e21;
+  position: fixed;
+  height: 100%;
+  padding-top: 20px;
+}
+
+.sidebar a {
+  display: block;
+  color: #fff;
+  padding: 12px 20px;
+  text-decoration: none;
+  margin-bottom: 5px;
+  border-radius: 6px;
+}
+
+.sidebar a:hover {
+  background-color: #007bff;
+}
+
+.main {
+  margin-left: 240px;
+  padding: 20px;
+}

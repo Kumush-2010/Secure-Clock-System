@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Profile</title>
+  <link rel="stylesheet" href="../assets/css/profile.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <h2>SecureClock</h2>
+  <nav>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="employees.html">Employees</a>
+  <a href="attendance.html">Attendance</a>
+  <a href="profile.html">Profile</a>
+</nav>
+
+  <button onclick="logout()">Logout</button>
+</aside>
+
+<main class="content">
+  <header>
+    <h1>Admin Profile</h1>
+  </header>
+
+  <section class="card">
+    <h3>Update Information</h3>
+    <input id="adminName" placeholder="Full Name">
+    <input id="adminEmail" placeholder="Email">
+    <input id="adminPassword" type="password" placeholder="New Password">
+    <button onclick="updateProfile()">Update Profile</button>
+    <p id="status" class="status"></p>
+  </section>
+</main>
+
+<script src="../assets/js/profile.js"></script>
+</body>
+</html>
