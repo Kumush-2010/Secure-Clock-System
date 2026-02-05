@@ -16,14 +16,7 @@
 
   <script>
     function selectType(type) {
-      // localStorage.setItem("clockType", type);
-      console.log("clockType:", localStorage.getItem("clockType"));
-// Clock In tugma
-localStorage.setItem("clockType", "IN");
-
-// Clock Out tugma
-localStorage.setItem("clockType", "OUT");
-
+      localStorage.setItem("clockType", type);
       window.location.href = "pin.html";
     }
   </script>
