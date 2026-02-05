@@ -6,11 +6,13 @@ const EmployeeSchema = new mongoose.Schema({
   pinHash: { type: String, required: true },
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now }
+  lastClockIn: { type: Date },
+  lastClockOut: { type: Date }
 });
 
-// Compare PIN
-EmployeeSchema.methods.comparePin = async function(pin) {
-  return await bcrypt.compare(pin, this.pinHash);
+// 🔐 PIN taqqoslash
+employeeSchema.methods.comparePin = function (enteredPin) {
+  return bcrypt.compare(enteredPin, this.pin);
 };
 
 // Generate PIN
