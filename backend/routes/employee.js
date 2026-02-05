@@ -5,6 +5,8 @@ import Attendance from "../models/Attendance.js";
 const router = express.Router();
 
 router.post("/clock", async (req, res) => {
+  console.log("HEADERS:", req.headers);
+  console.log("BODY:", req.body);
   const { pin, type } = req.body;
 
   if (!pin || !type) return res.status(400).json({ error: "PIN va type kerak" });
