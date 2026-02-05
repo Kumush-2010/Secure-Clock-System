@@ -4,7 +4,12 @@ async function sendPin() {
     ? "http://localhost:3000"
     : "https://secure-clock-system.onrender.com";
   const pin = document.getElementById("pin").value;
-  const type = localStorage.getItem("clockType");
+ const type = localStorage.getItem("clockType");
+
+if (type !== "IN" && type !== "OUT") {
+  errorText.innerText = "Iltimos IN yoki OUT ni tanlang";
+  return;
+}
   const errorText = document.getElementById("error");
   const title = document.getElementById("title");
 
@@ -25,7 +30,7 @@ async function sendPin() {
     const res = await fetch(`${API_URL}/api/employee/clock`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-     body: JSON.stringify({ pin })
+      body: JSON.stringify({ pin, type })
     });
 
     const data = await res.json();
