@@ -1,6 +1,11 @@
 const token = localStorage.getItem("token");
 if (!token) window.location.href = "login.html";
 
+const API_URL =
+  location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://secure-clock-system.onrender.com";
+
 const employeesTable = document.getElementById("employeesTable");
 const modal = document.getElementById("employeeForm");
 let editingId = null;
@@ -32,7 +37,7 @@ function closeForm() {
 }
 
 async function loadEmployees() {
-  const res = await fetch("http://localhost:3000/api/admin/employees", {
+  const res = await fetch(`${API_URL}/api/admin/employees`, {
     headers: { Authorization: "Bearer " + token }
   });
   const data = await res.json();
@@ -61,8 +66,8 @@ async function saveEmployee() {
   const body = { fullName: name, email, pin };
 
   const url = editingId
-    ? `http://localhost:3000/api/admin/employees/${editingId}`
-    : "http://localhost:3000/api/admin/employees";
+    ? `${API_URL}/api/admin/employees/${editingId}`
+    : `${API_URL}/api/admin/employees`;
 
   const method = editingId ? "PUT" : "POST";
 
@@ -83,7 +88,7 @@ async function saveEmployee() {
 async function deleteEmployee(id) {
   if (!confirm("Are you sure you want to delete this employee?")) return;
 
-  const res = await fetch(`http://localhost:3000/api/admin/employees/${id}`, {
+  const res = await fetch(`${API_URL}/api/admin/employees/${id}`, {
     method: "DELETE",
     headers: { Authorization: "Bearer " + token }
   });
