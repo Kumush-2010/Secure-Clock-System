@@ -1,4 +1,7 @@
-const API = "http://localhost:3000/api";
+const API_URL =
+  location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://secure-clock-system.onrender.com";
 const token = localStorage.getItem("token");
 
 if (!token) {
@@ -11,7 +14,7 @@ function logout() {
 }
 
 async function loadAttendance() {
-  const res = await fetch(`${API}/admin/attendance`, {
+  const res = await fetch(`${API_URL}/admin/attendance`, {
     headers: { Authorization: "Bearer " + token }
   });
 
