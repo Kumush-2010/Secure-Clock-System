@@ -1,6 +1,11 @@
 const token = localStorage.getItem("token");
 if (!token) window.location.href = "login.html";
 
+const API_URL =
+  location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://secure-clock-system.onrender.com";
+
 const table = document.getElementById("attendanceTable");
 const filterInput = document.getElementById("filterDate");
 
@@ -10,7 +15,7 @@ function logout() {
 }
 
 async function loadAttendance(date = null) {
-  let url = "http://localhost:3000/api/admin/attendance";
+  let url = `${API_URL}/api/admin/attendance`;
   if (date) url += `?date=${date}`;
 
   const res = await fetch(url, {
