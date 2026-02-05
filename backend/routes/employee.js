@@ -5,20 +5,16 @@ import Attendance from "../models/Attendance.js";
 const router = express.Router();
 
 router.post("/clock", async (req, res) => {
-  let { pin, type } = req.body;
+  const { pin, type } = req.body;
 
-  // 🔥 FRONTEND BILAN MOSLASHTIRISH
-  if (type === "clock-in") type = "IN";
-  if (type === "clock-out") type = "OUT";
-
-  if (!pin || !type) {
-    return res.status(400).json({ error: "PIN va type kerak" });
-  }
+  if (!pin || !type) return res.status(400).json({ error: "PIN va type kerak" });
 
   try {
-    const employees = await Employee.find();
+    // Employee ni topish
+    const employees = await Employee.find(); // barcha employee larni olish
     let employee = null;
 
+    // PINni tekshirish (hash bilan)
     for (let emp of employees) {
       const match = await emp.comparePin(pin);
       if (match) {
@@ -27,18 +23,12 @@ router.post("/clock", async (req, res) => {
       }
     }
 
-    if (!employee) {
-      return res.status(404).json({
-        error: "Employee topilmadi yoki PIN noto‘g‘ri"
-      });
-    }
+    if (!employee) return res.status(404).json({ error: "Employee topilmadi yoki PIN noto‘g‘ri" });
 
-    // ⏱ CLOCK IN
+    // Clock In logikasi
     if (type === "IN") {
       if (employee.lastClockIn && !employee.lastClockOut) {
-        return res.status(400).json({
-          error: "Allaqachon Clock In qilingan"
-        });
+        return res.status(400).json({ error: "Allaqachon Clock In qilingan" });
       }
 
       employee.lastClockIn = new Date();
@@ -51,18 +41,13 @@ router.post("/clock", async (req, res) => {
       });
     }
 
-    // ⏱ CLOCK OUT
+    // Clock Out logikasi
     if (type === "OUT") {
       if (!employee.lastClockIn) {
-        return res.status(400).json({
-          error: "Clock In qilinmagan, OUT mumkin emas"
-        });
+        return res.status(400).json({ error: "Clock In qilinmagan, OUT mumkin emas" });
       }
-
       if (employee.lastClockOut) {
-        return res.status(400).json({
-          error: "Allaqachon Clock Out qilingan"
-        });
+        return res.status(400).json({ error: "Allaqachon Clock Out qilingan" });
       }
 
       employee.lastClockOut = new Date();
@@ -74,12 +59,13 @@ router.post("/clock", async (req, res) => {
       });
     }
 
-    return res.status(400).json({ error: "Noto‘g‘ri type" });
+    res.status(400).json({ error: "Noto‘g‘ri type" });
 
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server xatolik" });
   }
 });
+
 
 export default router;
