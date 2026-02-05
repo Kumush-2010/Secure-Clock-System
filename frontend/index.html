@@ -16,7 +16,9 @@
 
   <script>
     function selectType(type) {
-      localStorage.setItem("clockType", type);
+      // localStorage.setItem("clockType", type);
+      localStorage.setItem("clockType", "clock-in");
+      localStorage.setItem("clockType", "OUT");
       window.location.href = "pin.html";
     }
   </script>
