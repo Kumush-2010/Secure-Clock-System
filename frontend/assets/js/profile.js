@@ -1,6 +1,11 @@
 const token = localStorage.getItem("token");
 if (!token) window.location.href = "login.html";
 
+const API_URL =
+  location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://secure-clock-system.onrender.com";
+
 const nameInput = document.getElementById("adminName");
 const emailInput = document.getElementById("adminEmail");
 const passwordInput = document.getElementById("adminPassword");
@@ -13,7 +18,7 @@ function logout() {
 
 // Load current admin info
 async function loadProfile() {
-  const res = await fetch("http://localhost:3000/api/admin/profile", {
+  const res = await fetch(`${API_URL}/api/admin/profile`, {
     headers: { Authorization: "Bearer " + token }
   });
 
@@ -32,7 +37,7 @@ async function updateProfile() {
 
   if (passwordInput.value) body.password = passwordInput.value;
 
-  const res = await fetch("http://localhost:3000/api/admin/profile", {
+  const res = await fetch(`${API_URL}/api/admin/profile`, {
     method: "PUT",
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
     body: JSON.stringify(body)
