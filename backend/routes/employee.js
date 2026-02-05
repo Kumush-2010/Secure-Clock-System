@@ -28,11 +28,11 @@ router.post("/clock", async (req, res) => {
       });
     }
 
-    // 🔥 AUTO LOGIC
-    // Agar hali IN qilinmagan bo‘lsa → IN
-    if (!employee.lastClockIn || employee.lastClockOut) {
+    // ⬇️⬇️⬇️ MANA SHU YERGA YOZASAN ⬇️⬇️⬇️
+
+    // 1️⃣ Hech qachon clock qilinmagan → IN
+    if (!employee.lastClockIn && !employee.lastClockOut) {
       employee.lastClockIn = new Date();
-      employee.lastClockOut = null;
       await employee.save();
 
       return res.status(200).json({
@@ -41,13 +41,25 @@ router.post("/clock", async (req, res) => {
       });
     }
 
-    // Aks holda → OUT
-    employee.lastClockOut = new Date();
+    // 2️⃣ IN bor, OUT yo‘q → OUT
+    if (employee.lastClockIn && !employee.lastClockOut) {
+      employee.lastClockOut = new Date();
+      await employee.save();
+
+      return res.status(200).json({
+        status: "OUT",
+        message: `Clock Out: ${employee.lastClockOut.toLocaleTimeString()}`
+      });
+    }
+
+    // 3️⃣ IN va OUT bor → yangi IN
+    employee.lastClockIn = new Date();
+    employee.lastClockOut = null;
     await employee.save();
 
     return res.status(200).json({
-      status: "OUT",
-      message: `Clock Out: ${employee.lastClockOut.toLocaleTimeString()}`
+      status: "IN",
+      message: `Clock In: ${employee.lastClockIn.toLocaleTimeString()}`
     });
 
   } catch (err) {
@@ -55,5 +67,6 @@ router.post("/clock", async (req, res) => {
     res.status(500).json({ error: "Server xatolik" });
   }
 });
+
 
 export default router;
