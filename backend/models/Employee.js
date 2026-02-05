@@ -5,7 +5,7 @@ const EmployeeSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   pinHash: { type: String, required: true },
   isActive: { type: Boolean, default: true },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
   lastClockIn: { type: Date },
   lastClockOut: { type: Date }
 });
