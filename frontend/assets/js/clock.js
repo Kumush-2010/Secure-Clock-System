@@ -22,7 +22,7 @@ async function sendPin() {
   title.innerText = `Processing ${type}...`;
 
   try {
-    const res = await fetch("${APU_URL}/api/employee/clock", {
+    const res = await fetch(`${APU_URL}/api/employee/clock`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ pin, type })
