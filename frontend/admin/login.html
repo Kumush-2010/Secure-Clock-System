@@ -20,14 +20,17 @@
   </div>
 
 <script>
-const API = "http://localhost:3000/api";
+const API_URL =
+  location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://secure-clock-system.onrender.com";
 
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
   try {
-    const res = await fetch(`${API}/admin/login`, {
+    const res = await fetch(`${API_URL}/admin/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
