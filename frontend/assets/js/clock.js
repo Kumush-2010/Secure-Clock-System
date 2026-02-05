@@ -5,6 +5,12 @@ async function sendPin() {
     : "https://secure-clock-system.onrender.com";
   const pin = document.getElementById("pin").value;
   const type = localStorage.getItem("clockType");
+
+if (type !== "IN" && type !== "OUT") {
+  window.location.href = "index.html";
+  return;
+}
+
   const errorText = document.getElementById("error");
   const title = document.getElementById("title");
 
