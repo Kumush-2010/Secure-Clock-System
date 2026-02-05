@@ -1,4 +1,8 @@
 async function sendPin() {
+  const API_URL =
+  location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://secure-clock-system.onrender.com";
   const pin = document.getElementById("pin").value;
   const type = localStorage.getItem("clockType");
   const errorText = document.getElementById("error");
@@ -18,7 +22,7 @@ async function sendPin() {
   title.innerText = `Processing ${type}...`;
 
   try {
-    const res = await fetch("http://localhost:3000/api/employee/clock", {
+    const res = await fetch("${APU_URL}/api/employee/clock", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ pin, type })
