@@ -100,11 +100,11 @@ router.put("/profile", verifyAdmin, async (req, res) => {
 router.post("/employees", verifyAdmin, async (req, res) => {
   const { fullName, pin } = req.body;
 
-  const hashedPin = await bcrypt.hash(pin, 10);
+  const pinHash = await bcrypt.hash(pin, 10);
 
   const emp = await Employee.create({
     fullName,
-    pin: hashedPin,
+    pinHash
   });
 
   res.json(emp);
