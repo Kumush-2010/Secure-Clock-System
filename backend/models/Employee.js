@@ -1,26 +1,36 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-const EmployeeSchema = new mongoose.Schema({
-  fullName: { type: String, required: true },
-  pinHash: { type: String, required: true },
-  isActive: { type: Boolean, default: true },
-  createdAt: { type: Date, default: Date.now },
-  lastClockIn: { type: Date },
-  lastClockOut: { type: Date }
+const employeeSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+
+  pin: {
+    type: String,
+    required: true,
+  },
+
+  status: {
+    type: String,
+    enum: ["in", "out"],
+    default: "out",
+  },
+
+  lastClockIn: Date,
+  lastClockOut: Date,
 });
 
-// 🔐 PIN taqqoslash
-employeeSchema.methods.comparePin = function (enteredPin) {
-  return bcrypt.compare(enteredPin, this.pin);
+employeeSchema.methods.comparePin = async function (enteredPin) {
+  return await bcrypt.compare(enteredPin, this.pin);
 };
+// EmployeeSchema.statics.generatePin = async function() {
+//   const pin = Math.floor(1000 + Math.random() * 9000).toString(); // 4-digit PIN
+//   const salt = await bcrypt.genSalt(10);
+//   const hash = await bcrypt.hash(pin, salt);
+//   return { pin, hash };
+// };
 
-// Generate PIN
-EmployeeSchema.statics.generatePin = async function() {
-  const pin = Math.floor(1000 + Math.random() * 9000).toString(); // 4-digit PIN
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(pin, salt);
-  return { pin, hash };
-};
-
-export default mongoose.model("Employee", EmployeeSchema);
+const Employee = mongoose.model("Employee", employeeSchema);
+export default Employee;
