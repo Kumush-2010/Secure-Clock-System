@@ -1,25 +1,21 @@
 async function sendPin() {
   const API_URL =
-  location.hostname === "localhost"
-    ? "http://localhost:3000"
-    : "https://secure-clock-system.onrender.com";
-  const pin = document.getElementById("pin").value;
- const type = localStorage.getItem("clockType");
+    location.hostname.includes("localhost")
+      ? "http://localhost:3000"
+      : "https://secure-clock-system.onrender.com";
 
-if (type !== "IN" && type !== "OUT") {
-  errorText.innerText = "Iltimos IN yoki OUT ni tanlang";
-  return;
-}
+  const pin = document.getElementById("pin").value;
+  const type = localStorage.getItem("clockType");
+
   const errorText = document.getElementById("error");
   const title = document.getElementById("title");
 
-  if (!type) {
-    // Agar to‘g‘ri tanlanmagan bo‘lsa
-    window.location.href = "index.html";
+  if (type !== "IN" && type !== "OUT") {
+    errorText.innerText = "Iltimos IN yoki OUT ni tanlang";
     return;
   }
 
-  if (!pin || pin.length !== 4) {
+  if (!pin  pin.length !== 4) {
     errorText.innerText = "Iltimos 4 xonali PIN kiriting";
     return;
   }
@@ -38,9 +34,9 @@ if (type !== "IN" && type !== "OUT") {
     if (res.ok) {
       localStorage.setItem("message", data.message);
       localStorage.setItem("status", data.status);
-      window.location.href = "success.html"; // Muvaffaqiyat sahifaga
+      window.location.href = "success.html";
     } else {
-      errorText.innerText = data.error || "PIN noto‘g‘ri yoki Clock qilingan";
+      errorText.innerText = data.error  "PIN noto‘g‘ri yoki Clock qilingan";
     }
   } catch (err) {
     console.error(err);
