@@ -23,11 +23,14 @@ console.log("HASH:", admin.passwordHash);
     if (!ok)
       return res.status(401).json({ error: "Wrong password" });
 
-    const token = jwt.sign(
-      { id: admin._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+   const token = jwt.sign(
+  {
+    id: admin._id,
+    role: "admin"
+  },
+  process.env.JWT_SECRET,
+  { expiresIn: "7d" }
+);
 
     res.json({ token, name: admin.name });
   } catch (err) {
