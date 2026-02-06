@@ -4,50 +4,79 @@ import Attendance from "../models/Attendance.js";
 
 const router = express.Router();
 
-async function sendPin() {
-  const API_URL =
-    location.hostname.includes("localhost")
-      ? "http://localhost:3000"
-      : "https://secure-clock-system.onrender.com";
+router.post("/clock", async (req, res) => {
+  const { pin, type } = req.body;
 
-  const pin = document.getElementById("pin").value;
-  const type = localStorage.getItem("clockType");
-
-  const errorText = document.getElementById("error");
-  const title = document.getElementById("title");
+  if (!pin || !type) {
+    return res.status(400).json({ error: "PIN va type kerak" });
+  }
 
   if (type !== "IN" && type !== "OUT") {
-    errorText.innerText = "Iltimos IN yoki OUT ni tanlang";
-    return;
+    return res.status(400).json({ error: "Noto‘g‘ri type" });
   }
-
-  if (!pin  pin.length !== 4) {
-    errorText.innerText = "Iltimos 4 xonali PIN kiriting";
-    return;
-  }
-
-  title.innerText = `Processing ${type}...`;
 
   try {
-    const res = await fetch(`${API_URL}/api/employee/clock`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pin, type })
-    });
+    // 🔹 Employee topish (PIN orqali)
+    const employees = await Employee.find();
 
-    const data = await res.json();
-
-    if (res.ok) {
-      localStorage.setItem("message", data.message);
-      localStorage.setItem("status", data.status);
-      window.location.href = "success.html";
-    } else {
-      errorText.innerText = data.error  "PIN noto‘g‘ri yoki Clock qilingan";
+    let employee = null;
+    for (const emp of employees) {
+      if (await emp.comparePin(pin)) {
+        employee = emp;
+        break;
+      }
     }
+
+    if (!employee) {
+      return res.status(404).json({ error: "PIN noto‘g‘ri yoki Employee topilmadi" });
+    }
+
+    // ================= CLOCK IN =================
+    if (type === "IN") {
+      const activeAttendance = await Attendance.findOne({
+        employee: employee._id,
+        clockOut: null
+      });
+
+      if (activeAttendance) {
+        return res.status(400).json({ error: "Allaqachon Clock In qilingan" });
+      }
+
+      await Attendance.create({
+        employee: employee._id,
+        clockIn: new Date()
+      });
+
+      return res.status(200).json({
+        message: "Clock In muvaffaqiyatli",
+        status: "IN"
+      });
+    }
+
+    // ================= CLOCK OUT =================
+    if (type === "OUT") {
+      const attendance = await Attendance.findOne({
+        employee: employee._id,
+        clockOut: null
+      });
+
+      if (!attendance) {
+        return res.status(400).json({ error: "Clock In qilinmagan, OUT mumkin emas" });
+      }
+
+      attendance.clockOut = new Date();
+      await attendance.save();
+
+      return res.status(200).json({
+        message: "Clock Out muvaffaqiyatli",
+        status: "OUT"
+      });
+    }
+
   } catch (err) {
-    console.error(err);
-    errorText.innerText = "Server bilan bog‘lanishda xatolik yuz berdi";
+    console.error("CLOCK ERROR:", err);
+    return res.status(500).json({ error: "Server xatolik" });
   }
-}
+});
 
 export default router;
