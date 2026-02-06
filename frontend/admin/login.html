@@ -39,7 +39,10 @@ async function login() {
     const data = await res.json();
 
     if (res.ok) {
+      // Tokenni localStorage ga saqlaymiz
       localStorage.setItem("token", data.token);
+
+      // Dashboard sahifasiga o‘tish
       window.location.href = "dashboard.html";
     } else {
       document.getElementById("error").innerText =
