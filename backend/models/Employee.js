@@ -2,24 +2,11 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 const employeeSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-
-  pin: {
-    type: String,
-    required: true,
-  },
-
-  status: {
-    type: String,
-    enum: ["in", "out"],
-    default: "out",
-  },
-
+  name: String,
+  pin: String, // oddiy string
   lastClockIn: Date,
   lastClockOut: Date,
+  status: String
 });
 
 employeeSchema.methods.comparePin = async function (enteredPin) {
