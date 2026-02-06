@@ -26,33 +26,39 @@ const API_URL =
     : "https://secure-clock-system.onrender.com";
 
 async function login() {
+  console.log("LOGIN CLICKED");
+
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  try {
-    const res = await fetch(`${API_URL}/api/admin/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
+  const res = await fetch(`${API_URL}/api/admin/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
 
-    const data = await res.json();
+  console.log("STATUS:", res.status);
 
-    if (res.ok) {
-      // Tokenni localStorage ga saqlaymiz
-      localStorage.setItem("token", data.token);
+  const data = await res.json();
+  console.log("RESPONSE:", data);
 
-      // Dashboard sahifasiga o‘tish
-      window.location.href = "dashboard.html";
-    } else {
-      document.getElementById("error").innerText =
-        data.error || "Invalid email or password";
-    }
-  } catch (err) {
-    document.getElementById("error").innerText = "Server error";
+  if (!res.ok) {
+    alert(data.error || "Login failed");
+    return;
   }
+
+  if (!data.token) {
+    alert("TOKEN KELMADI ❌");
+    return;
+  }
+
+  localStorage.setItem("token", data.token);
+  console.log("TOKEN SAQLANDI:", localStorage.getItem("token"));
+
+  window.location.href = "dashboard.html";
 }
 </script>
+
 
 </body>
 </html>
