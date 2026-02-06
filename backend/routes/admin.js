@@ -12,32 +12,30 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     const admin = await Admin.findOne({ email });
-
     if (!admin)
-      return res.status(404).json({ error: "Admin not found" });
+      return res.status(401).json({ error: "Invalid credentials" });
 
     const ok = await admin.comparePassword(password);
-    console.log("PASSWORD:", password);
-console.log("HASH:", admin.passwordHash);
-
     if (!ok)
-      return res.status(401).json({ error: "Wrong password" });
+      return res.status(401).json({ error: "Invalid credentials" });
 
-   const token = jwt.sign(
-  {
-    id: admin._id,
-    role: "admin"
-  },
-  process.env.JWT_SECRET,
-  { expiresIn: "7d" }
-);
+    const token = jwt.sign(
+      {
+        id: admin._id,
+        role: "admin"
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res.json({ token, name: admin.name });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 
 router.post("/forgot-password", async (req, res) => {
