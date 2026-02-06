@@ -1,13 +1,16 @@
-import mongoose from "mongoose";
 // import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 
 const employeeSchema = new mongoose.Schema({
   name: String,
-  pin: String, // oddiy string
+  pin: String, 
   lastClockIn: Date,
   lastClockOut: Date,
   status: String
 });
+
+export default mongoose.model("Employee", employeeSchema);
+
 
 // employeeSchema.methods.comparePin = async function (enteredPin) {
 //   return await bcrypt.compare(enteredPin, this.pin);
@@ -18,6 +21,3 @@ const employeeSchema = new mongoose.Schema({
 //   const hash = await bcrypt.hash(pin, salt);
 //   return { pin, hash };
 // };
-
-const Employee = mongoose.model("Employee", employeeSchema);
-export default Employee;
