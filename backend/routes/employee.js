@@ -4,68 +4,50 @@ import Attendance from "../models/Attendance.js";
 
 const router = express.Router();
 
-router.post("/clock", async (req, res) => {
-  const { pin, type } = req.body;
+async function sendPin() {
+  const API_URL =
+    location.hostname.includes("localhost")
+      ? "http://localhost:3000"
+      : "https://secure-clock-system.onrender.com";
 
-  if (!pin || !type) return res.status(400).json({ error: "PIN va type kerak" });
+  const pin = document.getElementById("pin").value;
+  const type = localStorage.getItem("clockType");
+
+  const errorText = document.getElementById("error");
+  const title = document.getElementById("title");
+
+  if (type !== "IN" && type !== "OUT") {
+    errorText.innerText = "Iltimos IN yoki OUT ni tanlang";
+    return;
+  }
+
+  if (!pin  pin.length !== 4) {
+    errorText.innerText = "Iltimos 4 xonali PIN kiriting";
+    return;
+  }
+
+  title.innerText = `Processing ${type}...`;
 
   try {
-    // Employee ni topish
-    const employees = await Employee.find(); // barcha employee larni olish
-    let employee = null;
+    const res = await fetch(`${API_URL}/api/employee/clock`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pin, type })
+    });
 
-    // PINni tekshirish (hash bilan)
-    for (let emp of employees) {
-      const match = await emp.comparePin(pin);
-      if (match) {
-        employee = emp;
-        break;
-      }
+    const data = await res.json();
+
+    if (res.ok) {
+      localStorage.setItem("message", data.message);
+      localStorage.setItem("status", data.status);
+      window.location.href = "success.html";
+    } else {
+      errorText.innerText = data.error  "PIN noto‘g‘ri yoki Clock qilingan";
     }
-
-    if (!employee) return res.status(404).json({ error: "Employee topilmadi yoki PIN noto‘g‘ri" });
-
-    // Clock In logikasi
-    if (type === "IN") {
-      if (employee.lastClockIn && !employee.lastClockOut) {
-        return res.status(400).json({ error: "Allaqachon Clock In qilingan" });
-      }
-
-      employee.lastClockIn = new Date();
-      employee.lastClockOut = null;
-      await employee.save();
-
-      return res.status(200).json({
-        message: `Clock In muvaffaqiyatli: ${employee.lastClockIn.toLocaleTimeString()}`,
-        status: "IN"
-      });
-    }
-
-    // Clock Out logikasi
-    if (type === "OUT") {
-      if (!employee.lastClockIn) {
-        return res.status(400).json({ error: "Clock In qilinmagan, OUT mumkin emas" });
-      }
-      if (employee.lastClockOut) {
-        return res.status(400).json({ error: "Allaqachon Clock Out qilingan" });
-      }
-
-      employee.lastClockOut = new Date();
-      await employee.save();
-
-      return res.status(200).json({
-        message: `Clock Out muvaffaqiyatli: ${employee.lastClockOut.toLocaleTimeString()}`,
-        status: "OUT"
-      });
-    }
-
-    res.status(400).json({ error: "Noto‘g‘ri type" });
-
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server xatolik" });
+    errorText.innerText = "Server bilan bog‘lanishda xatolik yuz berdi";
   }
-});
-
+}
 
 export default router;
