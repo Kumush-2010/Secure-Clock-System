@@ -138,17 +138,18 @@ router.delete("/employees/:id", verifyAdmin, async (req, res) => {
 /* =======================
    ATTENDANCE
 ======================= */
-router.get("/attendance", verifyAdmin, async (req, res) => {
+router.get("/attendance", async (req, res) => {
   try {
-    const logs = await Attendance.find()
-      .populate("employeeId", "fullName")
-      .sort({ time: -1 });
+    const attendance = await Attendance.find()
+      .populate("employee", "name email")
+      .sort({ createdAt: -1 });
 
-    res.json(logs);
+    res.json(attendance);
   } catch (err) {
     console.error("ATTENDANCE ERROR:", err);
-    res.status(500).json({ error: "Failed to load attendance" });
+    res.status(500).json({ error: "Server error" });
   }
 });
+
 
 export default router;
