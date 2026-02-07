@@ -1,4 +1,24 @@
+let pinValue = "";
+
+function add(num) {
+  if (pinValue.length < 4) {
+    pinValue += num;
+    updateDots();
+  }
+}
+
+function del() {
+  pinValue = pinValue.slice(0, -1);
+  updateDots();
+}
+
+function updateDots() {
+  document.getElementById("dots").innerText =
+    pinValue.padEnd(4, "•").split("").join(" ");
+}
+
   async function sendPin() {
+    const pin = pinValue;
   const API_URL =
   location.hostname === "localhost"
     ? "http://localhost:3000"
