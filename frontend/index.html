@@ -20,5 +20,12 @@
       <button class="main-btn" onclick="selectType('OUT')">Clock Out</button>
     </div>
   </div>
+  
+  <script>
+  function selectType(type) {
+    localStorage.setItem("clockType", type);
+    window.location.href = "pin.html";
+  }
+</script>
 </body>
 </html>
