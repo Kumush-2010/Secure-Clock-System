@@ -2,19 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Login</title>
+  <title>Admin Panel Login</title>
   <link rel="stylesheet" href="../assets/css/login.css">
 </head>
 <body class="auth-body">
 
   <div class="login-card">
-    <h2>Admin Login</h2>
-    <p class="subtitle">Secure Clock System</p>
 
-    <input id="email" type="email" placeholder="Email" />
-    <input id="password" type="password" placeholder="Password" />
+    <div class="logo">TechCells</div>
 
-    <button onclick="login()">Login</button>
+    <h2>Welcome Back!</h2>
+
+    <label>Email Address</label>
+    <input id="email" type="email" placeholder="techcells@mail.com" />
+
+    <label>Password</label>
+    <input id="password" type="password" placeholder="••••••••" />
+
+    <div class="row">
+      <label class="remember">
+        <input type="checkbox" />
+        Remember me
+      </label>
+      <a href="#" class="forgot">Forgot your password?</a>
+    </div>
+
+    <button onclick="login()">Log in</button>
 
     <p id="error" class="error"></p>
   </div>
@@ -26,10 +39,16 @@ const API_URL =
     : "https://secure-clock-system.onrender.com";
 
 async function login() {
-  console.log("LOGIN CLICKED");
-
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
+  const error = document.getElementById("error");
+
+  error.innerText = "";
+
+  if (!email || !password) {
+    error.innerText = "Email va parolni kiriting";
+    return;
+  }
 
   const res = await fetch(`${API_URL}/api/admin/login`, {
     method: "POST",
@@ -37,28 +56,17 @@ async function login() {
     body: JSON.stringify({ email, password })
   });
 
-  console.log("STATUS:", res.status);
-
   const data = await res.json();
-  console.log("RESPONSE:", data);
 
   if (!res.ok) {
-    alert(data.error || "Login failed");
-    return;
-  }
-
-  if (!data.token) {
-    alert("TOKEN KELMADI ❌");
+    error.innerText = data.error || "Login failed";
     return;
   }
 
   localStorage.setItem("token", data.token);
-  console.log("TOKEN SAQLANDI:", localStorage.getItem("token"));
-
   window.location.href = "dashboard.html";
 }
 </script>
-
 
 </body>
 </html>
