@@ -7,21 +7,21 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+  <div class="header">
+    <a href="index.html">← home</a>
+    <span>TechCells</span>
+  </div>
+
   <div class="container">
-    <h1>Muvaffaqiyat!</h1>
-    <p id="msg"></p>
-    <button onclick="goHome()">Back to Home</button>
+    <div class="card">
+      <h2 id="msg"></h2>
+      <p>✔ Successfully completed</p>
+    </div>
   </div>
 
   <script>
-    const msg = document.getElementById("msg");
-    msg.innerText = localStorage.getItem("message") || "Clock action completed";
-    function goHome() {
-      localStorage.removeItem("clockType");
-      localStorage.removeItem("message");
-      localStorage.removeItem("status");
-      window.location.href = "index.html";
-    }
+    document.getElementById("msg").innerText =
+      localStorage.getItem("message") || "Done!";
   </script>
 </body>
 </html>
