@@ -1,51 +1,65 @@
 body {
-  font-family: 'Arial', sans-serif;
-  background: #f4f6f8;
   margin: 0;
-  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  font-weight: bold;
+}
+
+.header a {
+  text-decoration: none;
+  color: #000;
 }
 
 .container {
-  width: 400px;
-  margin: 80px auto;
+  max-width: 420px;
+  margin: 60px auto;
   background: #fff;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-h1 {
-  margin-bottom: 20px;
-  color: #333;
+.card {
+  border: 1px solid #ddd;
+  padding: 25px;
+  border-radius: 10px;
 }
 
-p {
-  font-size: 16px;
-  color: #555;
-}
-
-button {
-  background-color: #007bff;
-  border: none;
-  color: white;
+.main-btn {
+  margin-top: 20px;
   padding: 12px 25px;
-  font-size: 16px;
+  border: none;
   border-radius: 8px;
+  background: #000;
+  color: #fff;
   cursor: pointer;
-  margin: 10px;
-  transition: 0.3s;
 }
 
-button:hover {
-  background-color: #0056b3;
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
 }
 
-input[type="text"], input[type="password"] {
-  width: 80%;
-  padding: 10px;
-  margin: 15px 0;
+.keypad button {
+  padding: 18px;
+  font-size: 18px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 16px;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.pin-dots {
+  letter-spacing: 8px;
+  font-size: 22px;
 }
