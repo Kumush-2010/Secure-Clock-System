@@ -19,14 +19,12 @@
     <label>Password</label>
     <input id="password" type="password" placeholder="••••••••" />
 
-    <div class="remember">
-  <label>
-    <input type="checkbox" id="rememberMe">
-    Remember me
-  </label>
-</div>
+    <div class="row">
+      <label class="remember">
+        <input type="checkbox" id="rememberMe"/>
+        Remember me
+      </label>
       <a href="forgot-password.html" class="forgot">Forgot your password?</a>
-
     </div>
 
     <button onclick="login()">Log in</button>
@@ -43,6 +41,7 @@ const API_URL =
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
+  const remember = document.getElementById("rememberMe").checked;
   const error = document.getElementById("error");
 
   error.innerText = "";
@@ -52,28 +51,32 @@ async function login() {
     return;
   }
 
-  const res = await fetch(`${API_URL}/api/admin/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
-  });
+  try {
+    const res = await fetch(`${API_URL}/api/admin/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (!res.ok) {
-    error.innerText = data.error || "Login failed";
-    return;
+    if (!res.ok) {
+      error.innerText = data.error || "Login failed";
+      return;
+    }
+
+    // Remember me
+    if (remember) {
+      localStorage.setItem("token", data.token);
+    } else {
+      sessionStorage.setItem("token", data.token);
+    }
+
+    window.location.href = "dashboard.html";
+  } catch (err) {
+    console.error(err);
+    error.innerText = "Server bilan bog‘lanishda xatolik yuz berdi";
   }
-  
-const remember = document.getElementById("rememberMe").checked;
-
-if (remember) {
-  localStorage.setItem("token", data.token);
-} else {
-  sessionStorage.setItem("token", data.token);
-}
-
-  window.location.href = "dashboard.html";
 }
 </script>
 
