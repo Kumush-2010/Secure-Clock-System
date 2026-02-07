@@ -7,18 +7,18 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to Secure Clock System</h1>
-    <p>Iltimos, birini tanlang:</p>
-    <button onclick="selectType('IN')">Clock In</button>
-    <button onclick="selectType('OUT')">Clock Out</button>
+  <div class="header">
+    <span>EasyChecker</span>
+    <span>TechCells</span>
   </div>
 
-  <script>
-    function selectType(type) {
-      localStorage.setItem("clockType", type);
-      window.location.href = "pin.html";
-    }
-  </script>
+  <div class="container">
+    <div class="card">
+      <h2>Welcome to TechCells!</h2>
+      <p>Do you want to clock in/out?</p>
+      <button class="main-btn" onclick="selectType('IN')">Clock In</button>
+      <button class="main-btn" onclick="selectType('OUT')">Clock Out</button>
+    </div>
+  </div>
 </body>
 </html>
