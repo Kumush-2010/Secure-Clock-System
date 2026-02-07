@@ -18,57 +18,41 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     const admin = await Admin.findOne({ email });
-    if (!admin) {
-      return res.status(401).json({ error: "Invalid credentials" });
-    }
+    if (!admin) return res.status(401).json({ error: "Invalid credentials" });
 
     const ok = await admin.comparePassword(password);
-    if (!ok) {
-      return res.status(401).json({ error: "Invalid credentials" });
-    }
+    if (!ok) return res.status(401).json({ error: "Invalid credentials" });
 
     const token = jwt.sign(
-      {
-        id: admin._id,
-        role: "admin",
-      },
+      { id: admin._id, role: "admin" },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    res.json({
-      token,
-      name: admin.name,
-    });
+    res.json({ token, name: admin.name });
   } catch (err) {
     console.error("LOGIN ERROR:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-router.post("/reset", async (req, res) => {
-  const { email, password } = req.body;
-
-  const admin = await Admin.findOne({ email });
-  if (!admin) {
-    return res.status(404).json({ error: "Admin not found" });
-  }
-
-  admin.password = password; // bcrypt model ichida
-  await admin.save();
-
-  res.json({ message: "Password updated successfully" });
-});
-
 /* =======================
-   ADMIN PROFILE
+   RESET PASSWORD
 ======================= */
-router.get("/profile", verifyAdmin, (req, res) => {
-  res.json({
-    name: req.admin.name,
-    email: req.admin.email,
-    createdAt: req.admin.createdAt,
-  });
+router.post("/reset", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const admin = await Admin.findOne({ email });
+    if (!admin) return res.status(404).json({ error: "Admin not found" });
+
+    admin.password = password; // bcrypt middleware ichida hash qilishi kerak
+    await admin.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (err) {
+    console.error("RESET ERROR:", err);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 router.put("/profile", verifyAdmin, async (req, res) => {
