@@ -65,8 +65,15 @@ async function login() {
     error.innerText = data.error || "Login failed";
     return;
   }
+  
+const remember = document.getElementById("rememberMe").checked;
 
+if (remember) {
   localStorage.setItem("token", data.token);
+} else {
+  sessionStorage.setItem("token", data.token);
+}
+
   window.location.href = "dashboard.html";
 }
 </script>
